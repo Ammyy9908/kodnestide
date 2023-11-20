@@ -24,24 +24,37 @@ function App() {
     const encoded = btoa(code);
     const result = await executeCode(+language, encoded, "", "");
 
-    const { data } = result;
-    const { status, stdout, compile_output } = data;
-    console.log(status, stdout);
+    try {
+      const { data } = result;
+      const { status, stdout, compile_output } = data;
+      console.log(status, stdout);
 
-    if (compile_output !== "") {
-      const output = atob(compile_output);
-      setOutput(output);
-    } else {
-      const output = atob(stdout);
-      setOutput(output);
+      if (compile_output !== "") {
+        const output = atob(compile_output);
+        setOutput(output);
+      } else {
+        const output = atob(stdout);
+        setOutput(output);
+      }
+      setLoader(false);
+
+      const { description } = status;
+
+      setStatus(description);
+
+      setTimeout(() => {
+        setStatus("");
+      }, 2000);
+    } catch (e) {
+      const { message } = result;
+      setLoader(false);
+      setStatus("Runtime error");
+      setOutput(message);
+
+      setTimeout(() => {
+        setStatus("");
+      }, 2000);
     }
-    setLoader(false);
-
-    const { description } = status;
-
-    console.log(description, output);
-
-    setStatus(description);
   };
 
   function handleEditorDidMount(editor, monaco) {
