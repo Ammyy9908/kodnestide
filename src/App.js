@@ -26,9 +26,8 @@ function App() {
 
     try {
       const { data } = result;
-      const { status, stdout, compile_output } = data;
-      console.log(status, stdout);
-
+      console.log(JSON.stringify(data));
+      const { status, stdout, compile_output } = data[0];
       if (compile_output !== "") {
         const output = atob(compile_output);
         setOutput(output);

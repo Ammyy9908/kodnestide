@@ -8,12 +8,16 @@ const executeCode = async (
 ) => {
   try {
     const r = await axios.post(
-      `https://staging-api.kodnest.in/compiler-service/api/v1/submission?base64Encoded=true&wait=false`,
+      `https://staging-api.kodnest.in/compiler-service/api/v1/execution?base64Encoded=true&wait=false`,
       {
         language_id: language_id,
         source_code: source_code,
-        stdin: stdin,
-        expected_output: expected_output,
+        executions: [
+          {
+            stdin: stdin,
+            expected_output: expected_output,
+          },
+        ],
       }
     );
     return r.data;
